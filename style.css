@@ -1,0 +1,210 @@
+*, *::after, *::before {
+    box-sizing: border-box;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --color-grey: #D6D6D6;
+    --color-blue-bg: #8623A4;
+    --color-pink-light: #FAC6DA;
+    --color-pink-dark: #EB1E6D;
+    --color-blue-light: #EEF3FC;
+    --color-blue-dark: #81A5EA;
+
+    --bg-cell: #521565;
+    --bg-color: #07162B;
+
+    --cell-size: 100px;
+    --mark-size: calc(var(--cell-size) * .9);
+    --padding-1: 1.6rem;
+    --box-shadow-cell: box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+html {
+    font-size: 62.5%;
+}
+
+/* -----------------------------CONTAINER-------------------------- */
+.container {
+    height: 100vh;
+    width: 100vw;
+    background: var(--bg-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5rem;
+    
+}
+
+/* ---------------------TITLE-------------------------- */
+.container .title {
+    padding: var(--padding-1);
+}
+
+.container .title h1 {
+    text-align: center;
+    font-size: 5rem;
+    color: var(--color-blue-light);
+}
+
+/* ---------------------PROGRESS-------------------------- */
+.container .progress {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+.progress p {
+    font-size: 6rem;
+    color: var(--color-blue-light);
+}
+
+.progress .icon {
+    position: relative;
+    height: var(--cell-size);
+    width: var(--cell-size);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.progress .icon.x::before,
+.progress .icon.x::after {
+    position: absolute;
+    content: '';
+    width: calc(var(--mark-size) * .1);
+    height: var(--mark-size);
+    background-color: var(--color-pink-light); 
+    box-shadow: 0 0 20px var(--color-pink-dark);
+}
+
+.progress .icon.x.dash {
+    border-radius: 1px;
+    border: 0;
+    border-bottom: 2px solid var(--color-pink-light);
+    box-shadow: 0 4px -5px var(--color-pink-dark);
+}
+
+.progress .icon.x::before {
+    transform: rotate(45deg);
+}
+
+.progress .icon.x::after {
+    transform: rotate(-45deg);
+}
+
+.progress .icon.circle.dash {
+    border: 0;
+    border-bottom: 2px solid white;
+    box-shadow: 0 4px 4px -4px var(--color-blue-dark);
+}
+
+.progress .icon.circle::before,
+.progress .icon.circle::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    width: calc(var(--mark-size) * .9);
+    height: calc(var(--mark-size) * .9);
+    background-color: var(--color-blue-light); 
+    box-shadow: 0 0 20px var(--color-blue-dark);  
+}
+
+.progress .icon.circle::after {
+    width: calc(var(--mark-size) * .7);
+    height: calc(var(--mark-size) * .7);
+    background: var(--bg-color);
+}
+
+/* ---------------------BOARD-------------------------- */
+.container .board {
+    display: grid;
+    grid-template-columns: repeat(3, var(--cell-size));
+    grid-template-rows: repeat(3, var(--cell-size));
+    justify-content: center;
+    align-content: center;
+}
+
+.container .board .cell {
+    position: relative;
+    border: 2px solid #A3A5E1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container .board .cell:nth-child(n + 1) {
+    border-top: none;
+    border-left: none;
+}
+
+.container .board .cell:nth-child(n + 7) {
+    border-bottom: none;
+}
+
+.container .board .cell:nth-child(3n) {
+    border-right: none;
+}
+
+.cell.x::before,
+.cell.x::after {
+    position: absolute;
+    content: '';
+    width: calc(var(--mark-size) * .1);
+    height: var(--mark-size);
+    background-color: var(--color-pink-light); 
+    box-shadow: 0 0 20px var(--color-pink-dark);   
+}
+
+.container .board .cell.x::before {
+    transform: rotate(45deg);
+}
+
+.container .board .cell.x::after {
+    transform: rotate(-45deg);
+}
+
+.container .board .cell.circle::before,
+.container .board .cell.circle::after {
+    position: absolute;
+    content: '';
+    border-radius: 50%;
+    width: calc(var(--mark-size) * .9);
+    height: calc(var(--mark-size) * .9);
+    background-color: var(--color-blue-light); 
+    box-shadow: 0 0 20px var(--color-blue-dark);   
+}
+
+.container .board .cell.circle::after {
+    width: calc(var(--mark-size) * .7);
+    height: calc(var(--mark-size) * .7);
+    background: var(--bg-color);
+}
+
+/* ---------------------RESULTS------------------------ */
+.results {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+}
+
+.results .message {
+    color: white;
+    font-size: 2.4rem;
+}
+
+.results .end-round {
+    display: flex;
+    gap: 3rem;
+}
+
+.end-round button {
+    padding: .8rem 1.6rem;
+    border-radius: 5px;
+}
