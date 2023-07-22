@@ -1,5 +1,7 @@
 var originBoard;
-let aiTurn;
+let aiTurn = true;
+let xScore = 0;
+let circleScore = 0;
 const aiPlayer = "X";
 const huPlayer = "O";
 const winCombos = [
@@ -14,17 +16,30 @@ const winCombos = [
 ];
 
 const cellElements = document.querySelectorAll(".data-cell");
+const endRound = document.querySelector(".end-round");
+const restartBtn = document.getElementById("restart-btn");
 
-(function startgame() {
+const startgame = (() => {
   originBoard = Array.from(Array(9).keys());
   cellElements.forEach((cell) => {
     cell.addEventListener("click", handleClick, { once: true });
   });
 })();
 
+const restart = (() => {
+  restartBtn.addEventListener("click", () => {
+    document.querySelector("#x-score").textContent = "0";
+    document.querySelector("#circle-score").textContent = "0";
+    document.querySelector("#message").textContent = "";
+    endRound.style.display = "none";
+    startgame();
+  });
+})();
+
 function handleClick(e) {
   const cell = e.target;
   const currentPlayer = aiTurn ? aiPlayer : huPlayer;
+  console.log(currentPlayer);
 
   const cellId = e.target.id;
 
@@ -32,7 +47,7 @@ function handleClick(e) {
 
   //check winner
   if (checkWinner(originBoard, currentPlayer)) {
-    console.log("winner");
+    displayResult(currentPlayer);
   }
 
   //switch turns
@@ -65,7 +80,15 @@ function checkWinner(board, player) {
 }
 
 function displayResult(player) {
-  const updateScore = () => 
+  player == huPlayer ? circleScore++ : xScore++;
+  updateScore(player);
+}
+
+function updateScore(player) {
+  document.querySelector("#x-score").textContent = xScore;
+  document.querySelector("#circle-score").textContent = circleScore;
+  document.querySelector("#message").textContent = `${player} WINS THE ROUND`;
+  endRound.style.display = "flex";
 }
 
 // switch turns between players

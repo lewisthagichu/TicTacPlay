@@ -199,8 +199,8 @@ html {
     font-size: 2.4rem;
 }
 
-.results .end-round {
-    display: flex;
+.end-round {
+    display: none;
     gap: 3rem;
 }
 
