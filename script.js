@@ -36,6 +36,7 @@ document.getElementById("multi").addEventListener("click", () => {
 // Game functions
 function startGame() {
   originBoard = Array.from(Array(9).keys());
+  makeComputerFirstMove();
   cellElements.forEach((cell) => {
     cell.addEventListener("click", handleClick, { once: true });
   });
@@ -46,28 +47,35 @@ function handleClick(e) {
   const cellId = e.target.id;
   const currentPlayer = huTurn ? huPlayer : aiPlayer;
 
-  placeMark(cell, currentPlayer, cellId);
+  if (gameMode === "multi-player") {
+    placeMark(cell, currentPlayer, cellId);
+    if (!checkWinner(originBoard, currentPlayer)) checkDraw();
+    switchTurns();
+  }
 
-  if (checkWinner(originBoard, currentPlayer)) displayResult(currentPlayer);
-  if (!checkWinner(originBoard, currentPlayer)) checkDraw();
-  switchTurns();
-
-  if (gameMode === "computer" && !huTurn) {
-    let aiMove = bestSpot();
-    console.log(aiMove);
-    makeComputerMove(aiMove);
+  if (gameMode === "computer") {
+    if (huTurn) {
+      placeMark(cell, currentPlayer, cellId);
+      switchTurns();
+      if (!checkWinner(originBoard, currentPlayer) && !checkDraw() && !huTurn) {
+        makeComputerMove(bestSpot());
+        switchTurns();
+      }
+    }
   }
 }
 
 function placeMark(cell, currentPlayer, cellId) {
   originBoard[cellId] = currentPlayer;
-  console.log(currentPlayer);
 
   if (currentPlayer == huPlayer) {
     cell.classList.add("x");
   } else {
     cell.classList.add("circle");
   }
+
+  let gameWon = checkWinner(originBoard, currentPlayer);
+  if (gameWon) gameOver(currentPlayer);
 }
 
 function checkWinner(board, player) {
@@ -82,7 +90,7 @@ function checkWinner(board, player) {
 }
 
 function displayResult(player) {
-  player == huPlayer ? circleScore++ : xScore++;
+  player == huPlayer ? xScore++ : circleScore++;
   updateScore(`${getCurrentPlayer()} WINS THE ROUND`);
 }
 
@@ -115,7 +123,9 @@ function checkDraw() {
   emptySpaces(originBoard);
   if (emptySpaces(originBoard).length === 0) {
     updateScore("IT'S A DRAW");
+    return true;
   }
+  return false;
 }
 
 function emptySpaces(board) {
@@ -125,25 +135,20 @@ function emptySpaces(board) {
 function makeComputerMove(cellId) {
   originBoard[cellId] = aiPlayer;
   document.getElementById(cellId).classList.add("circle");
+
+  let gameWon = checkWinner(originBoard, aiPlayer);
+  if (gameWon) gameOver(aiPlayer);
+}
+
+function makeComputerFirstMove() {
+  if (gameMode == "computer" && !huTurn) {
+    makeComputerMove(bestSpot());
+    switchTurns();
+  }
 }
 
 function bestSpot() {
   return minimax(originBoard, aiPlayer).index;
-}
-
-function restart() {
-  xScore = 0;
-  circleScore = 0;
-  document.querySelector("#x-score").textContent = 0;
-  document.querySelector("#circle-score").textContent = 0;
-  document.querySelector("#message").textContent = "";
-  endRound.style.display = "none";
-
-  cellElements.forEach((cell) => {
-    cell.classList.remove("circle");
-    cell.classList.remove("x");
-  });
-  startGame();
 }
 
 // the main minimax function
@@ -210,6 +215,28 @@ function minimax(newBoard, player) {
   // return the chosen move (object) from the array to the higher depth
 
   return moves[bestMove];
+}
+
+function gameOver(player) {
+  cellElements.forEach((cell) => {
+    cell.removeEventListener("click", handleClick, { once: true });
+  });
+  displayResult(player);
+}
+
+function restart() {
+  xScore = 0;
+  circleScore = 0;
+  document.querySelector("#x-score").textContent = 0;
+  document.querySelector("#circle-score").textContent = 0;
+  document.querySelector("#message").textContent = "";
+  endRound.style.display = "none";
+
+  cellElements.forEach((cell) => {
+    cell.classList.remove("circle");
+    cell.classList.remove("x");
+  });
+  startGame();
 }
 
 // Start the game initially
