@@ -26,6 +26,16 @@
 
 html {
     font-size: 62.5%;
+    font-family: 'Press Start 2P', cursive;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
+}
+
+/* -----------------------------CONTAINER-------------------------- */
+.intro {
+    display: flex;
+    flex-direction: column;
 }
 
 /* -----------------------------CONTAINER-------------------------- */
@@ -37,6 +47,7 @@ html {
     flex-direction: column;
     align-items: center;
     gap: 5rem;
+    display: none;
     
 }
 
@@ -60,14 +71,14 @@ html {
 }
 
 .progress p {
-    font-size: 6rem;
+    font-size: 2rem;
     color: var(--color-blue-light);
 }
 
 .progress .icon {
     position: relative;
-    height: var(--cell-size);
-    width: var(--cell-size);
+    height: calc(var(--cell-size) * .5);
+    width: calc(var(--cell-size) * .5);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -77,16 +88,16 @@ html {
 .progress .icon.x::after {
     position: absolute;
     content: '';
-    width: calc(var(--mark-size) * .1);
-    height: var(--mark-size);
+    width: calc(var(--mark-size) * .1 * .5);
+    height: calc(var(--mark-size) * .5);
     background-color: var(--color-pink-light); 
     box-shadow: 0 0 20px var(--color-pink-dark);
 }
 
 .progress .icon.x.dash {
     border-radius: 1px;
-    border: 0;
-    border-bottom: 2px solid var(--color-pink-light);
+    border-bottom: 0;
+    border: 2px solid var(--color-pink-light);
     box-shadow: 0 4px -5px var(--color-pink-dark);
 }
 
@@ -109,15 +120,15 @@ html {
     content: '';
     position: absolute;
     border-radius: 50%;
-    width: calc(var(--mark-size) * .9);
-    height: calc(var(--mark-size) * .9);
+    width: calc(var(--mark-size) * .9 * .5);
+    height: calc(var(--mark-size) * .9 * .5);
     background-color: var(--color-blue-light); 
     box-shadow: 0 0 20px var(--color-blue-dark);  
 }
 
 .progress .icon.circle::after {
-    width: calc(var(--mark-size) * .7);
-    height: calc(var(--mark-size) * .7);
+    width: calc(var(--mark-size) * .7 * .5);
+    height: calc(var(--mark-size) * .7 * .5);
     background: var(--bg-color);
 }
 
