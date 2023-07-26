@@ -33,6 +33,27 @@ document.getElementById("multi").addEventListener("click", () => {
   gameMode = "multi-player";
 });
 
+// Choose difficulty
+const difficultyOptions = {
+  easy: "easy",
+  medium: "medium",
+  unbeatable: "unbeatable",
+};
+let difficulty = difficultyOptions.easy;
+gameDifficulty();
+
+function gameDifficulty() {
+  document.getElementById("easy").addEventListener("click", () => {
+    difficulty = difficultyOptions.easy;
+  });
+  document.getElementById("medium").addEventListener("click", () => {
+    difficulty = difficultyOptions.medium;
+  });
+  document.getElementById("unbeatable").addEventListener("click", () => {
+    difficulty = difficultyOptions.unbeatable;
+  });
+}
+
 // Game functions
 function startGame() {
   originBoard = Array.from(Array(9).keys());
@@ -49,16 +70,21 @@ function handleClick(e) {
 
   if (gameMode === "multi-player") {
     placeMark(cell, currentPlayer, cellId);
-    if (!checkWinner(originBoard, currentPlayer)) checkDraw();
+    if (!checkWinner(originBoard, currentPlayer)) checkDraw(currentPlayer);
     switchTurns();
   }
 
   if (gameMode === "computer") {
-    if (huTurn) {
+    if (huTurn && typeof originBoard[cellId] === "number") {
       placeMark(cell, currentPlayer, cellId);
       switchTurns();
-      if (!checkWinner(originBoard, currentPlayer) && !checkDraw() && !huTurn) {
+      if (
+        !checkWinner(originBoard, currentPlayer) &&
+        !checkDraw(currentPlayer) &&
+        !huTurn
+      ) {
         makeComputerMove(bestSpot());
+        checkDraw(currentPlayer);
         switchTurns();
       }
     }
@@ -68,11 +94,9 @@ function handleClick(e) {
 function placeMark(cell, currentPlayer, cellId) {
   originBoard[cellId] = currentPlayer;
 
-  if (currentPlayer == huPlayer) {
-    cell.classList.add("x");
-  } else {
-    cell.classList.add("circle");
-  }
+  currentPlayer == huPlayer
+    ? cell.classList.add("x")
+    : cell.classList.add("circle");
 
   let gameWon = checkWinner(originBoard, currentPlayer);
   if (gameWon) gameOver(currentPlayer);
@@ -111,17 +135,14 @@ function getCurrentPlayer() {
 
 function switchTurns() {
   huTurn = !huTurn;
-  switchDash();
 }
 
-function switchDash() {
-  document.querySelector(".icon.circle").classList.toggle("dash");
-  document.querySelector(".icon.x").classList.toggle("dash");
-}
-
-function checkDraw() {
+function checkDraw(player) {
   emptySpaces(originBoard);
-  if (emptySpaces(originBoard).length === 0) {
+  if (
+    emptySpaces(originBoard).length === 0 &&
+    !checkWinner(originBoard, player)
+  ) {
     updateScore("IT'S A DRAW");
     return true;
   }
@@ -141,14 +162,59 @@ function makeComputerMove(cellId) {
 }
 
 function makeComputerFirstMove() {
-  if (gameMode == "computer" && !huTurn) {
+  if (gameMode === "computer" && !huTurn) {
     makeComputerMove(bestSpot());
     switchTurns();
   }
 }
 
 function bestSpot() {
-  return minimax(originBoard, aiPlayer).index;
+  if (difficulty === difficultyOptions.easy) {
+    return easyAI();
+  } else if (difficulty === difficultyOptions.medium) {
+    return mediumAI(originBoard, aiPlayer);
+  } else if (difficulty === difficultyOptions.unbeatable)
+    return minimax(originBoard, aiPlayer).index;
+}
+
+function easyAI() {
+  let arr = emptySpaces(originBoard);
+  const randomIndex = Math.floor(Math.random() * arr.length);
+  console.log(arr);
+  console.log(arr[randomIndex]);
+  return arr[randomIndex];
+}
+
+function mediumAI(board, player) {
+  // Check for a winning move for the AI (aiPlayer)
+  for (let i = 0; i < 9; i++) {
+    if (board[i] === i) {
+      board[i] = player;
+      if (checkWinner(board, player)) {
+        board[i] = i; // Reset the board state
+        return i; // Return the winning move index
+      }
+      board[i] = i; // Reset the board state
+    }
+  }
+
+  // Check for a winning move for the opponent (huPlayer)
+  const opponentPlayer = player === huPlayer ? aiPlayer : huPlayer;
+  for (let i = 0; i < 9; i++) {
+    if (board[i] === i) {
+      board[i] = opponentPlayer;
+      if (checkWinner(board, opponentPlayer)) {
+        board[i] = i; // Reset the board state
+        return i; // Return the blocking move index
+      }
+      board[i] = i; // Reset the board state
+    }
+  }
+
+  // If no winning moves are available, make a random move
+  const emptyCells = emptySpaces(board);
+  const randomIndex = Math.floor(Math.random() * emptyCells.length);
+  return emptyCells[randomIndex];
 }
 
 // the main minimax function
@@ -163,6 +229,7 @@ function minimax(newBoard, player) {
   } else if (availSpots.length === 0) {
     return { score: 0 };
   }
+
   // an array to collect all the objects
   var moves = [];
 

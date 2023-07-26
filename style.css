@@ -8,20 +8,27 @@
 }
 
 :root {
-    --color-grey: #D6D6D6;
-    --color-blue-bg: #8623A4;
-    --color-pink-light: #FAC6DA;
-    --color-pink-dark: #EB1E6D;
-    --color-blue-light: #EEF3FC;
-    --color-blue-dark: #81A5EA;
+    --color-blue-light: #6EB0ED;
+    --color-blue-dark: #1B7EDA;
+    --color-orange-light: #F5AB3D;
+    --color-orange-dark: #E0693E;
 
-    --bg-cell: #521565;
-    --bg-color: #07162B;
+    --border-cell: #D6D6D6;
+    --bg-color: #f6f6f9;
+    --color-white: #fff; 
 
-    --cell-size: 100px;
+    --cell-size: 120px;
     --mark-size: calc(var(--cell-size) * .9);
-    --padding-1: 1.6rem;
-    --box-shadow-cell: box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    
+    --card-padding: 1.6rem;
+    --padding-1: 1rem;
+    --padding-2: 8px;
+
+    --card-border-radius: 1.6rem;
+    --border-radius-1: 1rem;
+    --border-radius-2: 6px;
+
+    --box-shadow: 0 2rem 3rem var(--border-cell);
 }
 
 html {
@@ -32,7 +39,13 @@ html {
 	user-select: none;
 }
 
-/* -----------------------------CONTAINER-------------------------- */
+/* --------------------------DARK THEME VARIABLES------------------------ */
+.dark-theme-variables {
+    --bg-color: #181a1e;
+    --color-white: #202528;
+}
+
+/* ------------------INTRO---------------------- */
 .intro {
     display: flex;
     flex-direction: column;
@@ -40,97 +53,38 @@ html {
 
 /* -----------------------------CONTAINER-------------------------- */
 .container {
+    padding-top: 6rem;
     height: 100vh;
     width: 100vw;
     background: var(--bg-color);
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 5rem;
+    gap: 3rem;
     display: none;
     
 }
 
-/* ---------------------TITLE-------------------------- */
-.container .title {
-    padding: var(--padding-1);
-}
-
-.container .title h1 {
-    text-align: center;
-    font-size: 5rem;
-    color: var(--color-blue-light);
-}
-
 /* ---------------------PROGRESS-------------------------- */
-.container .progress {
+.container .tally {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 1rem;
+    gap: 3rem;
 }
 
-.progress p {
-    font-size: 2rem;
-    color: var(--color-blue-light);
+.tally .score {
+    padding: 1rem 1.6rem;
+    background: var(--color-white);
+    border-radius: var(--border-radius-1);
 }
 
-.progress .icon {
-    position: relative;
-    height: calc(var(--cell-size) * .5);
-    width: calc(var(--cell-size) * .5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.tally p {
+    font-size: 1.2rem;
+    color: var(--color-orange-light);
 }
 
-.progress .icon.x::before,
-.progress .icon.x::after {
-    position: absolute;
-    content: '';
-    width: calc(var(--mark-size) * .1 * .5);
-    height: calc(var(--mark-size) * .5);
-    background-color: var(--color-pink-light); 
-    box-shadow: 0 0 20px var(--color-pink-dark);
-}
 
-.progress .icon.x.dash {
-    border-radius: 1px;
-    border-bottom: 0;
-    border: 2px solid var(--color-pink-light);
-    box-shadow: 0 4px -5px var(--color-pink-dark);
-}
-
-.progress .icon.x::before {
-    transform: rotate(45deg);
-}
-
-.progress .icon.x::after {
-    transform: rotate(-45deg);
-}
-
-.icon.circle.dash {
-    border: 0;
-    border-bottom: 2px solid white;
-    box-shadow: 0 4px 4px -4px var(--color-blue-dark);
-}
-
-.progress .icon.circle::before,
-.progress .icon.circle::after {
-    content: '';
-    position: absolute;
-    border-radius: 50%;
-    width: calc(var(--mark-size) * .9 * .5);
-    height: calc(var(--mark-size) * .9 * .5);
-    background-color: var(--color-blue-light); 
-    box-shadow: 0 0 20px var(--color-blue-dark);  
-}
-
-.progress .icon.circle::after {
-    width: calc(var(--mark-size) * .7 * .5);
-    height: calc(var(--mark-size) * .7 * .5);
-    background: var(--bg-color);
-}
 
 /* ---------------------BOARD-------------------------- */
 .container .board {
@@ -139,11 +93,20 @@ html {
     grid-template-rows: repeat(3, var(--cell-size));
     justify-content: center;
     align-content: center;
+    background: var(--color-white);
+    padding: var(--card-padding);
+    border-radius: var(--card-border-radius);
+    box-shadow: var(--box-shadow);
+    transition: all 300ms;
+}
+
+.container .board:hover {
+    box-shadow: none;
 }
 
 .container .board .cell {
     position: relative;
-    border: 2px solid #A3A5E1;
+    border: 2px solid var(--border-cell);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -166,10 +129,10 @@ html {
 .cell.x::after {
     position: absolute;
     content: '';
-    width: calc(var(--mark-size) * .1);
+    width: calc(var(--mark-size) * .3);
     height: var(--mark-size);
-    background-color: var(--color-pink-light); 
-    box-shadow: 0 0 20px var(--color-pink-dark);   
+    background: linear-gradient(45deg, var(--color-blue-dark), var(--color-blue-light)); 
+    box-shadow: 0 0 10px var(--color-blue-dark);   
 }
 
 .container .board .cell.x::before {
@@ -185,15 +148,15 @@ html {
     position: absolute;
     content: '';
     border-radius: 50%;
-    width: calc(var(--mark-size) * .9);
-    height: calc(var(--mark-size) * .9);
-    background-color: var(--color-blue-light); 
-    box-shadow: 0 0 20px var(--color-blue-dark);   
+    width: calc(var(--mark-size));
+    height: calc(var(--mark-size));
+    background: linear-gradient(45deg, var(--color-orange-dark), var(--color-orange-light)); 
+    box-shadow: 0 0 10px var(--color-orange-dark);   
 }
 
 .container .board .cell.circle::after {
-    width: calc(var(--mark-size) * .7);
-    height: calc(var(--mark-size) * .7);
+    width: calc(var(--mark-size) * .4);
+    height: calc(var(--mark-size) * .4);
     background: var(--bg-color);
 }
 
@@ -206,7 +169,7 @@ html {
 }
 
 .results .message {
-    color: white;
+    /* color: white; */
     font-size: 2.4rem;
 }
 
