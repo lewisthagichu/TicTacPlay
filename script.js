@@ -3,7 +3,8 @@ let originBoard;
 let huTurn = true;
 let xScore = 0;
 let circleScore = 0;
-let gameMode = "computer";
+let gameMode = "";
+
 const huPlayer = "X";
 const aiPlayer = "O";
 const winCombos = [
@@ -16,6 +17,12 @@ const winCombos = [
   [0, 4, 8],
   [6, 4, 2],
 ];
+const difficultyOptions = {
+  easy: "easy",
+  medium: "medium",
+  unbeatable: "unbeatable",
+};
+let difficulty = difficultyOptions.easy;
 
 // DOM elements
 const cellElements = document.querySelectorAll(".data-cell");
@@ -23,39 +30,17 @@ const endRound = document.querySelector(".end-round");
 const endGame = document.querySelector(".end-game");
 const restartBtn = document.getElementById("restart-btn");
 const startBtn = document.getElementById("start");
+const p1Name = document.getElementById("p1-name");
+const p2Name = document.getElementById("p2-name");
+const player1 = document.getElementById("player-1");
+const player2 = document.getElementById("player-2");
 
 // Event listeners
 restartBtn.addEventListener("click", restart);
-document.getElementById("single").addEventListener("click", () => {
-  gameMode = "computer";
-});
-document.getElementById("multi").addEventListener("click", () => {
-  gameMode = "multi-player";
-});
 
-// Choose difficulty
-const difficultyOptions = {
-  easy: "easy",
-  medium: "medium",
-  unbeatable: "unbeatable",
-};
-let difficulty = difficultyOptions.easy;
-gameDifficulty();
-
-function gameDifficulty() {
-  document.getElementById("easy").addEventListener("click", () => {
-    difficulty = difficultyOptions.easy;
-  });
-  document.getElementById("medium").addEventListener("click", () => {
-    difficulty = difficultyOptions.medium;
-  });
-  document.getElementById("unbeatable").addEventListener("click", () => {
-    difficulty = difficultyOptions.unbeatable;
-  });
-}
-
-// Game functions
 function startGame() {
+  chooseGameMode();
+  gameDifficulty();
   originBoard = Array.from(Array(9).keys());
   makeComputerFirstMove();
   cellElements.forEach((cell) => {
@@ -63,6 +48,60 @@ function startGame() {
   });
 }
 
+// Choose a game mode
+function chooseGameMode() {
+  document.getElementById("single").addEventListener("click", () => {
+    gameMode = "computer";
+    document.querySelector(".mode").style.display = "none";
+    document.querySelector(".difficulty").style.display = "flex";
+    p2Name.textContent = "AI";
+    p2Name.placeholder = "AI";
+    p2Name.readOnly = true;
+  });
+  document.getElementById("multi").addEventListener("click", () => {
+    gameMode = "multi-player";
+    document.querySelector(".mode").style.display = "none";
+    document.querySelector(".names").style.display = "flex";
+  });
+}
+
+// Choose difficulty
+function gameDifficulty() {
+  document.getElementById("easy").addEventListener("click", () => {
+    difficulty = difficultyOptions.easy;
+    showName();
+  });
+  document.getElementById("medium").addEventListener("click", () => {
+    difficulty = difficultyOptions.medium;
+    showName();
+  });
+  document.getElementById("unbeatable").addEventListener("click", () => {
+    difficulty = difficultyOptions.unbeatable;
+    showName();
+  });
+}
+
+function showName() {
+  document.querySelector(".difficulty").style.display = "none";
+  document.querySelector(".names").style.display = "flex";
+}
+
+function setName() {
+  const p1NameValue = p1Name.value.trim();
+  const p2NameValue = p2Name.value.trim();
+  console.log(p1NameValue);
+
+  if (p1NameValue === "") {
+    player1.textContent = "Player 1";
+  } else if (p2NameValue === "") {
+    player2.textContent = "Player 2";
+  } else {
+    player1.textContent = p1NameValue;
+    player2.textContent = p2NameValue;
+  }
+}
+
+// Game functions
 function handleClick(e) {
   const cell = e.target;
   const cellId = e.target.id;
@@ -319,3 +358,5 @@ endGame.addEventListener("click", () => {
   document.querySelector(".intro").style.display = "flex";
   document.querySelector(".container").style.display = "none";
 });
+
+startGame();
