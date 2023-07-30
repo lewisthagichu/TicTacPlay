@@ -293,8 +293,17 @@ input[type="text"] {
     border-right: none;
 }
 
+.board.x .cell:not(.x):not(.circle):hover::before,
+.board.x .cell:not(.x):not(.circle):hover::after,
+.board.circle .cell:not(.x):not(.circle):hover::before,
+.board.circle .cell:not(.x):not(.circle):hover::after {
+    opacity: .2;
+}
+
 .cell.x::before,
-.cell.x::after {
+.cell.x::after,
+.board.x .cell:not(.x):not(.circle):hover::before,
+.board.x .cell:not(.x):not(.circle):hover::after {
     position: absolute;
     content: '';
     width: calc(var(--mark-size) * .3);
@@ -303,16 +312,20 @@ input[type="text"] {
     box-shadow: 0 0 10px var(--color-blue-dark);   
 }
 
-.cell.x::before {
+.cell.x::before,
+.board.x .cell:not(.x):not(.circle):hover::before {
     transform: rotate(45deg);
 }
 
-.cell.x::after {
+.cell.x::after,
+.board.x .cell:not(.x):not(.circle):hover::after {
     transform: rotate(-45deg);
 }
 
 .cell.circle::before,
-.cell.circle::after {
+.cell.circle::after,
+.board.circle .cell:not(.x):not(.circle):hover::before,
+.board.circle .cell:not(.x):not(.circle):hover::after {
     position: absolute;
     content: '';
     border-radius: 50%;
@@ -322,7 +335,8 @@ input[type="text"] {
     box-shadow: 0 0 10px var(--color-orange-dark);   
 }
 
-.cell.circle::after {
+.cell.circle::after,
+.board.circle .cell:not(.x):not(.circle):hover::after {
     width: calc(var(--mark-size) * .4);
     height: calc(var(--mark-size) * .4);
     background: var(--bg-color);

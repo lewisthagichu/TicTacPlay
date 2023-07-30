@@ -35,6 +35,7 @@ const p1Name = document.getElementById("p1-name");
 const p2Name = document.getElementById("p2-name");
 const player1 = document.getElementById("player-1");
 const player2 = document.getElementById("player-2");
+const board = document.getElementById("board");
 
 // Event listeners
 restartBtn.addEventListener("click", restart);
@@ -44,11 +45,11 @@ function startGame() {
   gameDifficulty();
   form.addEventListener("submit", (e) => {
     e.preventDefault();
-
     setName();
   });
 
   originBoard = Array.from(Array(9).keys());
+  setBoardHoverClass();
   makeComputerFirstMove();
   cellElements.forEach((cell) => {
     cell.addEventListener("click", handleClick, { once: true });
@@ -126,16 +127,19 @@ function handleClick(e) {
     placeMark(cell, currentPlayer, cellId);
     if (!checkWinner(originBoard, currentPlayer)) checkDraw();
     switchTurns();
+    setBoardHoverClass();
   }
 
   if (gameMode === "computer") {
     if (huTurn && typeof originBoard[cellId] === "number") {
       placeMark(cell, currentPlayer, cellId);
       switchTurns();
+      setBoardHoverClass();
       if (!checkWinner(originBoard, currentPlayer) && !checkDraw() && !huTurn) {
         makeComputerMove(bestSpot());
         checkDraw();
         switchTurns();
+        setBoardHoverClass();
       }
     }
   }
@@ -193,6 +197,17 @@ function switchTurns() {
   huTurn = !huTurn;
 }
 
+function setBoardHoverClass() {
+  board.classList.remove("x");
+  board.classList.remove("circle");
+
+  if (huTurn) {
+    board.classList.add("x");
+  } else {
+    board.classList.add("circle");
+  }
+}
+
 function checkDraw() {
   const isBoardFull = emptySpaces(originBoard).length === 0;
   const isAiWinner = checkWinner(originBoard, aiPlayer);
@@ -211,19 +226,20 @@ function emptySpaces(board) {
 }
 
 function makeComputerMove(cellId) {
-  originBoard[cellId] = aiPlayer;
-  document.getElementById(cellId).classList.add("circle");
+  setTimeout(() => {
+    originBoard[cellId] = aiPlayer;
+    document.getElementById(cellId).classList.add("circle");
 
-  let gameWon = checkWinner(originBoard, aiPlayer);
-  if (gameWon) gameOver(aiPlayer);
+    let gameWon = checkWinner(originBoard, aiPlayer);
+    if (gameWon) gameOver(aiPlayer);
+  }, 800);
 }
 
 function makeComputerFirstMove() {
   if (gameMode === "computer" && !huTurn) {
     makeComputerMove(bestSpot());
     switchTurns();
-  } else if (gameMode === "multi-player") {
-    return;
+    setBoardHoverClass();
   }
 }
 
