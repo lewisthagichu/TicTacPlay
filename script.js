@@ -25,6 +25,7 @@ const difficultyOptions = {
 let difficulty = difficultyOptions.easy;
 
 // DOM elements
+const form = document.getElementById("form");
 const cellElements = document.querySelectorAll(".data-cell");
 const endRound = document.querySelector(".end-round");
 const endGame = document.querySelector(".end-game");
@@ -41,6 +42,12 @@ restartBtn.addEventListener("click", restart);
 function startGame() {
   chooseGameMode();
   gameDifficulty();
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    setName();
+  });
+
   originBoard = Array.from(Array(9).keys());
   makeComputerFirstMove();
   cellElements.forEach((cell) => {
@@ -54,11 +61,13 @@ function chooseGameMode() {
     gameMode = "computer";
     document.querySelector(".mode").style.display = "none";
     document.querySelector(".difficulty").style.display = "flex";
-    p2Name.textContent = "AI";
+    p2Name.value = "AI";
     p2Name.placeholder = "AI";
     p2Name.readOnly = true;
   });
   document.getElementById("multi").addEventListener("click", () => {
+    p2Name.placeholder = "Player 2";
+    p2Name.readOnly = false;
     gameMode = "multi-player";
     document.querySelector(".mode").style.display = "none";
     document.querySelector(".names").style.display = "flex";
@@ -89,15 +98,21 @@ function showName() {
 function setName() {
   const p1NameValue = p1Name.value.trim();
   const p2NameValue = p2Name.value.trim();
-  console.log(p1NameValue);
+  const small1 = document.getElementById("small-1");
+  const small2 = document.getElementById("small-2");
 
-  if (p1NameValue === "") {
-    player1.textContent = "Player 1";
-  } else if (p2NameValue === "") {
-    player2.textContent = "Player 2";
+  if (p1NameValue.length > 10) {
+    small1.textContent = "Name should have maximum 10 characters";
+  } else if (p2NameValue > 10) {
+    small2.textContent = "Name should have maximum 10 characters";
   } else {
     player1.textContent = p1NameValue;
     player2.textContent = p2NameValue;
+  }
+
+  if (small1.textContent == "" && small2.textContent == "") {
+    document.querySelector(".names").style.display = "none";
+    document.querySelector(".start-game").style.display = "flex";
   }
 }
 
@@ -109,7 +124,7 @@ function handleClick(e) {
 
   if (gameMode === "multi-player") {
     placeMark(cell, currentPlayer, cellId);
-    if (!checkWinner(originBoard, currentPlayer)) checkDraw(currentPlayer);
+    if (!checkWinner(originBoard, currentPlayer)) checkDraw();
     switchTurns();
   }
 
@@ -117,13 +132,9 @@ function handleClick(e) {
     if (huTurn && typeof originBoard[cellId] === "number") {
       placeMark(cell, currentPlayer, cellId);
       switchTurns();
-      if (
-        !checkWinner(originBoard, currentPlayer) &&
-        !checkDraw(currentPlayer) &&
-        !huTurn
-      ) {
+      if (!checkWinner(originBoard, currentPlayer) && !checkDraw() && !huTurn) {
         makeComputerMove(bestSpot());
-        checkDraw(currentPlayer);
+        checkDraw();
         switchTurns();
       }
     }
@@ -154,7 +165,13 @@ function checkWinner(board, player) {
 
 function displayResult(player) {
   player == huPlayer ? xScore++ : circleScore++;
-  updateScore(`${getCurrentPlayer()} WINS THE ROUND`);
+  const winner = getCurrentPlayer();
+  if (winner == huPlayer) {
+    updateScore(`${player1.textContent.toUpperCase()} WINS THE ROUND`);
+  }
+  if (winner == aiPlayer) {
+    updateScore(`${player2.textContent.toUpperCase()} WINS THE ROUND`);
+  }
 }
 
 function updateScore(message) {
@@ -176,15 +193,16 @@ function switchTurns() {
   huTurn = !huTurn;
 }
 
-function checkDraw(player) {
-  emptySpaces(originBoard);
-  if (
-    emptySpaces(originBoard).length === 0 &&
-    !checkWinner(originBoard, player)
-  ) {
+function checkDraw() {
+  const isBoardFull = emptySpaces(originBoard).length === 0;
+  const isAiWinner = checkWinner(originBoard, aiPlayer);
+  const isHuWinner = checkWinner(originBoard, huPlayer);
+
+  if (isBoardFull && !isAiWinner && !isHuWinner) {
     updateScore("IT'S A DRAW");
     return true;
   }
+
   return false;
 }
 
@@ -204,6 +222,8 @@ function makeComputerFirstMove() {
   if (gameMode === "computer" && !huTurn) {
     makeComputerMove(bestSpot());
     switchTurns();
+  } else if (gameMode === "multi-player") {
+    return;
   }
 }
 
@@ -347,6 +367,10 @@ function restart() {
 
 // Start the game initially
 startBtn.addEventListener("click", () => {
+  p1Name.value = "";
+  p2Name.value = "";
+  document.querySelector(".start-game").style.display = "none";
+  document.querySelector(".mode").style.display = "flex";
   document.querySelector(".intro").style.display = "none";
   document.querySelector(".container").style.display = "flex";
   startGame();
@@ -354,6 +378,7 @@ startBtn.addEventListener("click", () => {
 
 // Quit the game
 endGame.addEventListener("click", () => {
+  gameMode = "";
   restart();
   document.querySelector(".intro").style.display = "flex";
   document.querySelector(".container").style.display = "none";

@@ -34,7 +34,7 @@
             <button class="unbeatable" id="unbeatable">Unbeatable</button>
         </div>
 
-        <div class="names">
+        <form id="form" class="names">
             <p>Enter name</p>
             <div class="player">
                 <label for="p1-name"></label>
@@ -43,12 +43,16 @@
             </div>
             <div class="player">
                 <label for="p1-name"></label>
-                <input type="text" name="p2-name" id="p2-name" required placeholder="Player-2" value="AI">
+                <input type="text" name="p2-name" id="p2-name" required placeholder="Player-2">
                 <small id="small-2"></small>
             </div> 
-            <div class="start-game">
-                <button type="submit" class="start" id="start">Start</button>
-            </div>           
+            <div class="submit-btn">
+                <button type="submit">Submit</button>
+            </div>                       
+        </form> 
+
+        <div class="start-game">
+            <button type="submit" class="start" id="start">Let's start</button>
         </div>        
         
         
