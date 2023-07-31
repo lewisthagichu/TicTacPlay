@@ -7,28 +7,38 @@
 
     <link rel="stylesheet" href="style.css">
     <link
-			href="https://fonts.googleapis.com/css?family=Fredoka+One|Press+Start+2P&display=swap"
-			rel="stylesheet"
-		/>
+      href="https://fonts.googleapis.com/css2?family=Heebo:wght@500;700&family=Lobster&display=swap"
+      rel="stylesheet"
+    />
+  
 </head>
 <body>
+    <div class="landing">
+        <div class="title">
+            <h2 class="color-blue"><span class="big-text">TIC</span></h2>
+            <h2><span class="big-text">TAC</span></h2>
+            <h2 class="color-orange"><span class="big-text">TOC</span></h2>
+        </div>
+        <div class="slider"></div>
+    </div>
     <!-- -----------INTRO------------- -->
-    <section class="intro">
+    <section class="intro">        
+        
         <div class="top">
-            <div class="x-icon"></div>
-            <div class="circle-icon"></div>
+            <div class="x-icon icon"></div>
+            <div class="circle-icon icon"></div>
         </div>
 
         <div class="mode">
             <p>Choose your play mode</p>
             <div class="buttons">
-                <button class="single" id="single">With AI</button>
+                <button class="single" id="single">AI</button>
                 <button class="multi" id="multi">With a friend</button>
             </div>
         </div>
 
         <div class="difficulty">
-            <p>Difficulty level</p>
+            <p>Choose difficulty level</p>
             <button class="easy" id="easy">Easy</button>
             <button class="medium" id="medium">Medium</button>
             <button class="unbeatable" id="unbeatable">Unbeatable</button>
@@ -86,7 +96,8 @@
         </div>
         
     </section> 
-
-   <script src="script.js"></script> 
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="script.js"></script> 
 </body>
 </html>

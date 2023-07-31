@@ -60,8 +60,14 @@ function startGame() {
 function chooseGameMode() {
   document.getElementById("single").addEventListener("click", () => {
     gameMode = "computer";
-    document.querySelector(".mode").style.display = "none";
-    document.querySelector(".difficulty").style.display = "flex";
+    removeCard(".mode");
+    setTimeout(() => {
+      document.querySelector(".mode").style.display = "none";
+      document.querySelector(".difficulty").style.display = "flex";
+      addCard(".difficulty");
+    }, 1000);
+
+    p2Name.style.cursor = "not-allowed";
     p2Name.value = "AI";
     p2Name.placeholder = "AI";
     p2Name.readOnly = true;
@@ -70,8 +76,12 @@ function chooseGameMode() {
     p2Name.placeholder = "Player 2";
     p2Name.readOnly = false;
     gameMode = "multi-player";
-    document.querySelector(".mode").style.display = "none";
-    document.querySelector(".names").style.display = "flex";
+    removeCard(".mode");
+    setTimeout(() => {
+      document.querySelector(".mode").style.display = "none";
+      document.querySelector(".names").style.display = "flex";
+      addCard(".names");
+    }, 1000);
   });
 }
 
@@ -92,8 +102,12 @@ function gameDifficulty() {
 }
 
 function showName() {
-  document.querySelector(".difficulty").style.display = "none";
-  document.querySelector(".names").style.display = "flex";
+  removeCard(".difficulty");
+  setTimeout(() => {
+    document.querySelector(".difficulty").style.display = "none";
+    document.querySelector(".names").style.display = "flex";
+    addCard(".names");
+  }, 1000);
 }
 
 function setName() {
@@ -112,8 +126,12 @@ function setName() {
   }
 
   if (small1.textContent == "" && small2.textContent == "") {
-    document.querySelector(".names").style.display = "none";
-    document.querySelector(".start-game").style.display = "flex";
+    removeCard(".names");
+    setTimeout(() => {
+      document.querySelector(".names").style.display = "none";
+      document.querySelector(".start-game").style.display = "flex";
+      addCard(".start-game");
+    }, 1000);
   }
 }
 
@@ -169,12 +187,15 @@ function checkWinner(board, player) {
 
 function displayResult(player) {
   player == huPlayer ? xScore++ : circleScore++;
-  const winner = getCurrentPlayer();
-  if (winner == huPlayer) {
-    updateScore(`${player1.textContent.toUpperCase()} WINS THE ROUND`);
+  if (player == huPlayer) {
+    updateScore(
+      `Congratulations ${player1.textContent.toUpperCase()}, you've mastered the board!`
+    );
   }
-  if (winner == aiPlayer) {
-    updateScore(`${player2.textContent.toUpperCase()} WINS THE ROUND`);
+  if (player == aiPlayer) {
+    updateScore(
+      `Resistance is futile! ${player2.textContent.toUpperCase()} trumphs over all challengers!`
+    );
   }
 }
 
@@ -232,7 +253,7 @@ function makeComputerMove(cellId) {
 
     let gameWon = checkWinner(originBoard, aiPlayer);
     if (gameWon) gameOver(aiPlayer);
-  }, 800);
+  }, 600);
 }
 
 function makeComputerFirstMove() {
@@ -385,19 +406,61 @@ function restart() {
 startBtn.addEventListener("click", () => {
   p1Name.value = "";
   p2Name.value = "";
-  document.querySelector(".start-game").style.display = "none";
+  document.querySelector(".landing").style.display = "none";
   document.querySelector(".mode").style.display = "flex";
-  document.querySelector(".intro").style.display = "none";
-  document.querySelector(".container").style.display = "flex";
-  startGame();
+
+  startBtnAnimation();
+  setTimeout(() => {
+    document.querySelector(".intro").style.display = "none";
+    document.querySelector(".start-game").style.display = "none";
+    document.querySelector(".container").style.display = "flex";
+  }, 1000);
 });
 
 // Quit the game
 endGame.addEventListener("click", () => {
   gameMode = "";
-  restart();
-  document.querySelector(".intro").style.display = "flex";
+
   document.querySelector(".container").style.display = "none";
+  document.querySelector(".landing").style.display = "flex";
+  landingAnimation();
+  restart();
 });
 
-startGame();
+// ANIMATIONS
+function landingAnimation() {
+  const landingTL = gsap.timeline();
+
+  landingTL
+    .to(".big-text", { duration: 1, y: "0%", stagger: 0.25 })
+    .to(".slider", { duration: 2, y: "-100%", delay: 0.5 })
+    .to(".landing", { duration: 1, y: "-100%" }, "-=1.5")
+    .to(".intro", { duration: 1, opacity: 1 })
+    .fromTo(".top", { y: "-100%" }, { duration: 1, y: "0%", ease: "bounce" });
+}
+
+function removeCard(card) {
+  const TL = gsap.timeline();
+
+  TL.fromTo(card, { opacity: 1 }, { opacity: 0, duration: 1 });
+}
+
+function addCard(card) {
+  const TL = gsap.timeline();
+
+  TL.fromTo(card, { opacity: 0 }, { opacity: 1, duration: 1 });
+}
+
+function startBtnAnimation() {
+  const TL = gsap.timeline({ defaults: { ease: "sine" } });
+
+  TL.fromTo(".top", { y: "0%" }, { y: "-100%", duration: 1 }).to(
+    ".start-game",
+    { y: "100%", duration: 1 }
+  );
+}
+
+window.onload = () => {
+  landingAnimation();
+  startGame();
+};

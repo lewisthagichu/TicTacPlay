@@ -1,3 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Hanalei&family=Inconsolata:wght@300&family=Pacifico&family=Poppins:wght@300;400;500;600;700;800&family=Roboto:wght@100;300;400;500;700;900&display=swap');
+
+@font-face {
+    font-family: bubblyFont;
+    src: url(fonts/BubbleBobble-rg3rx.ttf);
+}
+
 *, *::after, *::before {
     box-sizing: border-box;
 }
@@ -41,30 +48,79 @@ html {
 	user-select: none;
 }
 
+body {
+    font-family: 'Roboto', sans-serif;
+}
+
 /* --------------------------DARK THEME VARIABLES------------------------ */
-.dark-theme-variables {
-    --bg-color: #181a1e;
-    --color-white: #202528;
+.color-orange {
+    color: var(--color-orange-dark);
+}
+
+.color-blue {
+    color: var(--color-blue-light);
+}
+
+.landing {
+    background: var(--bg-color);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20rem;
+    width: 100%;
+}
+
+.landing h2 {
+   font-family: 'bubblyFont';
+   font-weight: 400; 
+   font-size: 12rem;
+}
+
+.slider {
+    background: var(--bg-color);
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    transform: translateY(100%);
+}
+
+.title h2 {
+    overflow: hidden;
+}
+
+h2 span {
+    display: inline-block;
+    transform: translateY(100%);
 }
 
 /* ------------------INTRO---------------------- */
 .intro {
-    height: 100vh;
-    width: 100vw;
-    padding-top: 10rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    min-height: 100vh;
+    min-width: 100vw;
     align-items: center;
     display: flex;
     flex-direction: column;
+    opacity: 0;
+}
+
+.intro p {
+    font-size: 1.6rem;
+    font-weight: 500;
 }
 
 .intro .top {
-    width: 250px;
-    height: 120px;
+    width: 100%;
+    height: 40vh;
     display: flex;
-    padding: var(--padding-2);
     justify-content: center;
     align-items: center;
-    gap: 11rem;
+    gap: 17rem;
 }
 
 .x-icon {
@@ -87,8 +143,8 @@ html {
 .x-icon::after {
     position: absolute;
     content: '';
-    width: calc(var(--mark-size) * .3);
-    height: var(--mark-size);
+    width: calc(180px * .3);
+    height: 180px;
     background: linear-gradient(45deg, var(--color-blue-dark), var(--color-blue-light)); 
     box-shadow: 0 0 10px var(--color-blue-dark);   
 }
@@ -114,28 +170,30 @@ html {
     position: absolute;
     content: '';
     border-radius: 50%;
-    width: calc(var(--mark-size) * .9);
-    height: calc(var(--mark-size) * .9);
+    width: calc(180px * .9);
+    height: calc(180px * .9);
     background: linear-gradient(45deg, var(--color-orange-dark), var(--color-orange-light)); 
     box-shadow: 0 0 1px var(--color-orange-light);   
 }
 
 .circle-icon::after {
-    width: calc(var(--mark-size) * .4);
-    height: calc(var(--mark-size) * .4);
+    width: calc(180px * .4);
+    height: calc(180px * .4);
     background: var(--bg-color);
 }
 
 /* --------mode---------- */
 .mode,
 .names,
-.difficulty {
+.difficulty,
+.start-game {
     display: none;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    gap: 4rem;
-    padding-top: 6rem;
+    justify-content: flex-start;
+    gap: 2rem;
+    height: 60vh;
+    width: 100%;
 }
 .mode .buttons {
     display: flex;
@@ -144,14 +202,14 @@ html {
 }
 
 button {
-    padding: 10px 20px;
+    padding: 8px 20px;
     background: var(--color-blue-dark);
     border-radius: 100px;
     cursor: pointer;
     color: var(--color-white);
     display: inline-flex;
-    font-size: 16px;
-    font-weight: 600;
+    font-size: 1.4rem;
+    font-weight: 700;
     min-width: 140px;
     max-width: 180px;
     justify-content: center;
@@ -196,7 +254,7 @@ small {
 input[type="text"] {
     padding: 10px 20px;
     background: var(--color-white);
-    border-radius: 50px;
+    border-radius: 10px;
     cursor: pointer;
     color: rgb(158, 157, 157);
     display: inline-flex;
@@ -207,52 +265,53 @@ input[type="text"] {
     min-width: 140px;
     max-width: 180px;
     transition: all 300ms ease;
-    border: 1px solid red;
+    border-bottom: 1px solid rgb(97, 96, 96);
 }
 
 /* --------difficulty---------- */
 
 .start-game {
     display: none;
-    padding-top: 6rem;
 }
 
 
 
 /* -----------------------------CONTAINER-------------------------- */
 .container {
-    padding-top: 6rem;
     height: 100vh;
     width: 100vw;
     background: var(--bg-color);
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 3rem;
     display: none;
-    
+    gap: 2rem; 
+    padding-top: 10rem;   
 }
 
-/* ---------------------PROGRESS-------------------------- */
+/* ---------------------TALLY-------------------------- */
 .container .tally {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 3rem;
+    gap: 2rem;    
 }
 
 .tally .score {
-    padding: 1rem 1.6rem;
+    padding: 0.8rem 2rem;
     background: var(--color-white);
     border-radius: var(--border-radius-1);
 }
 
 .tally p {
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     color: var(--color-orange-light);
 }
 
-
+#player-1,
+#player-2 {
+    font-size: 1.8rem;
+}
 
 /* ---------------------BOARD-------------------------- */
 .container .board {
@@ -351,8 +410,8 @@ input[type="text"] {
 }
 
 .results .message {
-    /* color: white; */
     font-size: 2.4rem;
+    font-weight: 700;
 }
 
 .end-round {
