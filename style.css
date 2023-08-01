@@ -1,8 +1,18 @@
-@import url('https://fonts.googleapis.com/css2?family=Hanalei&family=Inconsolata:wght@300&family=Pacifico&family=Poppins:wght@300;400;500;600;700;800&family=Roboto:wght@100;300;400;500;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700;800&family=Roboto:wght@100;300;400;500;700;900&display=swap');
 
 @font-face {
     font-family: bubblyFont;
     src: url(fonts/BubbleBobble-rg3rx.ttf);
+}
+
+@font-face {
+    font-family: tropical-Asian;
+    src: url(fonts/TropicalAsianDemoRegular-11V0.ttf)
+}
+
+@font-face {
+    font-family: bobba;
+    src: url(fonts/Bobaland.ttf);
 }
 
 *, *::after, *::before {
@@ -14,6 +24,7 @@
     padding: 0;
     appearance: none;
     border: none;
+    outline: none;
 }
 
 :root {
@@ -110,8 +121,9 @@ h2 span {
 }
 
 .intro p {
-    font-size: 1.6rem;
+    font-size: 3rem;
     font-weight: 500;
+    font-family: tropical-Asian;
 }
 
 .intro .top {
@@ -191,7 +203,7 @@ h2 span {
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    gap: 2rem;
+    gap: 1rem;
     height: 60vh;
     width: 100%;
 }
@@ -208,8 +220,9 @@ button {
     cursor: pointer;
     color: var(--color-white);
     display: inline-flex;
-    font-size: 1.4rem;
-    font-weight: 700;
+    font-size: 1.8rem;
+    font-weight: 500;
+    font-family: 'Caveat', cursive;
     min-width: 140px;
     max-width: 180px;
     justify-content: center;
@@ -246,13 +259,15 @@ button:hover {
 }
 
 small {
-    font-size: 8px;
+    font-size: 14px;
+    text-align: center;
     padding: 6px 0 0 16px;
     color: red;
+    font-family: 'caveat', cursive;
 }
 
 input[type="text"] {
-    padding: 10px 20px;
+    padding: 8px 20px;
     background: var(--color-white);
     border-radius: 10px;
     cursor: pointer;
@@ -263,7 +278,6 @@ input[type="text"] {
     justify-content: center;
     line-height: 20px;
     min-width: 140px;
-    max-width: 180px;
     transition: all 300ms ease;
     border-bottom: 1px solid rgb(97, 96, 96);
 }
@@ -300,7 +314,7 @@ input[type="text"] {
 .tally .score {
     padding: 0.8rem 2rem;
     background: var(--color-white);
-    border-radius: var(--border-radius-1);
+    border-radius: var(--border-radius-1);    
 }
 
 .tally p {
@@ -310,7 +324,10 @@ input[type="text"] {
 
 #player-1,
 #player-2 {
-    font-size: 1.8rem;
+    font-size: 2rem;
+    letter-spacing: 2px;
+    font-weight: 700;
+    font-family: 'Caveat', cursive;
 }
 
 /* ---------------------BOARD-------------------------- */
@@ -325,6 +342,7 @@ input[type="text"] {
     border-radius: var(--card-border-radius);
     box-shadow: var(--box-shadow);
     transition: all 300ms;
+    opacity: 0;
 }
 
 .container .board:hover {
@@ -406,33 +424,62 @@ input[type="text"] {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 2rem;
+    gap: 0.5rem;
+    opacity: 0;
 }
 
-.results .message {
-    font-size: 2.4rem;
+.results p,
+button.restart {
+    transition: all 300ms ease-out;
+}
+
+.results p:hover,
+button.restart:hover {
+    transform: scale(.9);
+}
+
+.results .message,
+button.restart {
+    font-size: 2.5rem;
     font-weight: 700;
+    text-align: center;
+    font-family: 'caveat', cursive;
+    color: gray;
 }
 
 .end-round {
     display: none;
-    gap: 3rem;
+    opacity: 0;
 }
 
-.end-round button {
-    padding: .8rem 1.6rem;
-    border-radius: 5px;
+button.restart {
+    background: var(--bg-color);
+    color: black;
+    box-shadow: none;
+    font-size: 2.5rem;
 }
 
+button.restart:hover {
+    color: var(--color-blue-light);
+}
 
-@keyframes rotate {
-    0%,
-    100% {
-      transform: rotate(0deg);
-    }
-    50% {
-      transform: rotate(360deg);
-    }
-  }
+button.end-game {
+    position: absolute;
+    left: 2rem;
+    top: 2rem; 
+    font-weight: 700;
+    border-radius: 50px;
+    padding: 10px;
+    box-shadow: 0 0 20px 2px rgba(0, 0, 0, 0.096);
+    background: var(--color-white);  
+    color: var(--color-blue-dark); 
+    transform: all 300ms ease;
+}
+
+button.end-game:hover {
+    color: black;
+    transform: scale(1.05);
+    box-shadow: none;
+}
 
   

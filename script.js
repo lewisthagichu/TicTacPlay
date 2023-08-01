@@ -38,7 +38,10 @@ const player2 = document.getElementById("player-2");
 const board = document.getElementById("board");
 
 // Event listeners
-restartBtn.addEventListener("click", restart);
+restartBtn.addEventListener("click", () => {
+  restart();
+  startGame();
+});
 
 function startGame() {
   chooseGameMode();
@@ -67,7 +70,6 @@ function chooseGameMode() {
       addCard(".difficulty");
     }, 1000);
 
-    p2Name.style.cursor = "not-allowed";
     p2Name.value = "AI";
     p2Name.placeholder = "AI";
     p2Name.readOnly = true;
@@ -123,9 +125,7 @@ function setName() {
   } else {
     player1.textContent = p1NameValue;
     player2.textContent = p2NameValue;
-  }
-
-  if (small1.textContent == "" && small2.textContent == "") {
+    small1.textContent = "";
     removeCard(".names");
     setTimeout(() => {
       document.querySelector(".names").style.display = "none";
@@ -202,8 +202,9 @@ function displayResult(player) {
 function updateScore(message) {
   document.querySelector("#x-score").textContent = xScore;
   document.querySelector("#circle-score").textContent = circleScore;
-  declareWinner(message);
   endRound.style.display = "flex";
+  declareWinner(message);
+  resultsAnimation();
 }
 
 function declareWinner(message) {
@@ -276,8 +277,6 @@ function bestSpot() {
 function easyAI() {
   let arr = emptySpaces(originBoard);
   const randomIndex = Math.floor(Math.random() * arr.length);
-  console.log(arr);
-  console.log(arr[randomIndex]);
   return arr[randomIndex];
 }
 
@@ -399,32 +398,33 @@ function restart() {
     cell.classList.remove("circle");
     cell.classList.remove("x");
   });
-  startGame();
 }
 
 // Start the game initially
 startBtn.addEventListener("click", () => {
   p1Name.value = "";
   p2Name.value = "";
-  document.querySelector(".landing").style.display = "none";
-  document.querySelector(".mode").style.display = "flex";
 
   startBtnAnimation();
   setTimeout(() => {
     document.querySelector(".intro").style.display = "none";
     document.querySelector(".start-game").style.display = "none";
     document.querySelector(".container").style.display = "flex";
+    addBoardAnimation();
   }, 1000);
 });
 
 // Quit the game
 endGame.addEventListener("click", () => {
   gameMode = "";
+  huTurn = true;
+  restart();
 
   document.querySelector(".container").style.display = "none";
   document.querySelector(".landing").style.display = "flex";
+  resetElements();
   landingAnimation();
-  restart();
+  startGame();
 });
 
 // ANIMATIONS
@@ -432,32 +432,76 @@ function landingAnimation() {
   const landingTL = gsap.timeline();
 
   landingTL
-    .to(".big-text", { duration: 1, y: "0%", stagger: 0.25 })
-    .to(".slider", { duration: 2, y: "-100%", delay: 0.5 })
-    .to(".landing", { duration: 1, y: "-100%" }, "-=1.5")
-    .to(".intro", { duration: 1, opacity: 1 })
-    .fromTo(".top", { y: "-100%" }, { duration: 1, y: "0%", ease: "bounce" });
+    .fromTo(
+      ".big-text",
+      { y: "100%" },
+      { duration: 1, y: "0%", delay: 1, stagger: 0.25 }
+    )
+    .fromTo(".slider", { y: "100%" }, { duration: 2, y: "-100%", delay: 0.5 })
+    .fromTo(".landing", { y: "0%" }, { duration: 1, y: "-100%" }, "-=1.5")
+    .fromTo(".intro", { opacity: 0 }, { duration: 1, opacity: 1 })
+    .fromTo(
+      ".top",
+      { y: "-100%" },
+      {
+        duration: 1,
+        y: "0%",
+        ease: "bounce",
+        onComplete: () => {
+          document.querySelector(".landing").style.display = "none";
+        },
+      }
+    );
 }
 
 function removeCard(card) {
-  const TL = gsap.timeline();
-
-  TL.fromTo(card, { opacity: 1 }, { opacity: 0, duration: 1 });
+  gsap.fromTo(card, { opacity: 1 }, { opacity: 0, duration: 1 });
 }
 
 function addCard(card) {
-  const TL = gsap.timeline();
+  gsap.fromTo(card, { opacity: 0 }, { opacity: 1, duration: 1, delay: 0.5 });
+}
 
-  TL.fromTo(card, { opacity: 0 }, { opacity: 1, duration: 1 });
+function addBoardAnimation() {
+  const boardTL = gsap.timeline({ defaults: { ease: "bounce" }, delay: 0.5 });
+
+  boardTL
+    .to(".board", { opacity: 1, duration: 1.5, ease: "back" })
+    .fromTo(".tally", { y: "-400%" }, { y: "0%", duration: 1 }, "-=1");
 }
 
 function startBtnAnimation() {
-  const TL = gsap.timeline({ defaults: { ease: "sine" } });
+  const startBtnTL = gsap.timeline({ defaults: { ease: "sine" } });
 
-  TL.fromTo(".top", { y: "0%" }, { y: "-100%", duration: 1 }).to(
-    ".start-game",
-    { y: "100%", duration: 1 }
-  );
+  startBtnTL
+    .fromTo(".top", { y: "0%" }, { y: "-100%", duration: 1 })
+    .fromTo(".start-game", { opacity: 1 }, { opacity: 0, duration: 1 }, "-=1");
+}
+
+function resultsAnimation() {
+  const resultsTL = gsap.timeline({ defaults: { duration: 1.5 } });
+
+  resultsTL
+    .fromTo(".results", { opacity: 0 }, { opacity: 1 })
+    .fromTo(".end-round", { opacity: 0 }, { opacity: 1 });
+}
+
+function resetElements() {
+  const bigText = document.querySelector(".big-text");
+  const slider = document.querySelector(".slider");
+  const landing = document.querySelector(".landing");
+  const intro = document.querySelector(".intro");
+  const board = document.querySelector(".board");
+  const mode = document.querySelector(".mode");
+
+  bigText.style.transform = "translateY(100%)";
+  slider.style.transform = "translateY(100%)";
+  landing.style.transform = "translateY(0%)";
+  intro.style.opacity = 0;
+  intro.style.display = "flex";
+  mode.style.display = "flex";
+  mode.style.opacity = 1;
+  board.style.opacity = 0;
 }
 
 window.onload = () => {
