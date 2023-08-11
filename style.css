@@ -474,6 +474,7 @@ button.end-game {
     background: var(--color-white);  
     color: var(--color-blue-dark); 
     transform: all 300ms ease;
+    opacity: 0;
 }
 
 button.end-game:hover {

@@ -467,7 +467,8 @@ function addBoardAnimation() {
 
   boardTL
     .to(".board", { opacity: 1, duration: 1.5, ease: "back" })
-    .fromTo(".tally", { y: "-400%" }, { y: "0%", duration: 1 }, "-=1");
+    .fromTo(".tally", { y: "-400%" }, { y: "0%", duration: 1 }, "-=1")
+    .fromTo(".end-game", { opacity: 0 }, { opacity: 1 }, "-=1");
 }
 
 function startBtnAnimation() {
