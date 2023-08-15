@@ -461,6 +461,7 @@ button.restart {
 
 button.restart:hover {
     color: var(--color-blue-light);
+    transform: scale(1.1);
 }
 
 button.end-game {

@@ -30,6 +30,7 @@ const cellElements = document.querySelectorAll(".data-cell");
 const endRound = document.querySelector(".end-round");
 const endGame = document.querySelector(".end-game");
 const restartBtn = document.getElementById("restart-btn");
+const continueBtn = document.getElementById("continue-btn");
 const startBtn = document.getElementById("start");
 const p1Name = document.getElementById("p1-name");
 const p2Name = document.getElementById("p2-name");
@@ -39,6 +40,15 @@ const board = document.getElementById("board");
 
 // Event listeners
 restartBtn.addEventListener("click", () => {
+  xScore = 0;
+  circleScore = 0;
+  document.querySelector("#x-score").textContent = 0;
+  document.querySelector("#circle-score").textContent = 0;
+  restart();
+  startGame();
+});
+
+continueBtn.addEventListener("click", () => {
   restart();
   startGame();
 });
@@ -387,10 +397,6 @@ function gameOver(player) {
 }
 
 function restart() {
-  xScore = 0;
-  circleScore = 0;
-  document.querySelector("#x-score").textContent = 0;
-  document.querySelector("#circle-score").textContent = 0;
   document.querySelector("#message").textContent = "";
   endRound.style.display = "none";
 
@@ -416,12 +422,13 @@ startBtn.addEventListener("click", () => {
 
 // Quit the game
 endGame.addEventListener("click", () => {
+  xScore = 0;
+  circleScore = 0;
+  document.querySelector("#x-score").textContent = 0;
+  document.querySelector("#circle-score").textContent = 0;
   gameMode = "";
   huTurn = true;
-  restart();
-
-  document.querySelector(".container").style.display = "none";
-  document.querySelector(".landing").style.display = "flex";
+  endGameAnimation();
   resetElements();
   landingAnimation();
   startGame();
@@ -435,7 +442,7 @@ function landingAnimation() {
     .fromTo(
       ".big-text",
       { y: "100%" },
-      { duration: 1, y: "0%", delay: 1, stagger: 0.25 }
+      { duration: 1, y: "0%", delay: 1.2, stagger: 0.25 }
     )
     .fromTo(".slider", { y: "100%" }, { duration: 2, y: "-100%", delay: 0.5 })
     .fromTo(".landing", { y: "0%" }, { duration: 1, y: "-100%" }, "-=1.5")
@@ -451,7 +458,9 @@ function landingAnimation() {
           document.querySelector(".landing").style.display = "none";
         },
       }
-    );
+    )
+    .fromTo(".tally", { opacity: 0 }, { opacity: 1 })
+    .fromTo(".results", { opacity: 0 }, { opacity: 1 });
 }
 
 function removeCard(card) {
@@ -466,9 +475,9 @@ function addBoardAnimation() {
   const boardTL = gsap.timeline({ defaults: { ease: "bounce" }, delay: 0.5 });
 
   boardTL
-    .to(".board", { opacity: 1, duration: 1.5, ease: "back" })
+    .to(".board", { opacity: 1, duration: 2, ease: "back" })
     .fromTo(".tally", { y: "-400%" }, { y: "0%", duration: 1 }, "-=1")
-    .fromTo(".end-game", { opacity: 0 }, { opacity: 1 }, "-=1");
+    .fromTo(".end-game", { opacity: 0 }, { opacity: 1 }, "-=1.5");
 }
 
 function startBtnAnimation() {
@@ -485,6 +494,22 @@ function resultsAnimation() {
   resultsTL
     .fromTo(".results", { opacity: 0 }, { opacity: 1 })
     .fromTo(".end-round", { opacity: 0 }, { opacity: 1 });
+}
+
+function endGameAnimation() {
+  const endGameTL = gsap.timeline();
+
+  endGameTL
+    .fromTo(".tally", { opacity: 1 }, { opacity: 0, duration: 1 })
+    .fromTo(".board", { opacity: 1 }, { opacity: 0, duration: 1 }, "-=1")
+    .fromTo(".results", { opacity: 1 }, { opacity: 0, duration: 1 }, "-=1")
+    .fromTo(".end-game", { opacity: 1 }, { opacity: 0, duration: 1 }, "-=1");
+
+  setTimeout(() => {
+    restart();
+    document.querySelector(".container").style.display = "none";
+    document.querySelector(".landing").style.display = "flex";
+  }, 1200);
 }
 
 function resetElements() {
