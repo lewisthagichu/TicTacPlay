@@ -1,5 +1,5 @@
 ## LIVE LINK ##
-Link: https://lewisthagichu.github.io/tic-tac-toe/
+Link: https://lewisthagichu.github.io/tik-tac-toe/
 
 # Tic Tac Toe Game
 Welcome to the Tic Tac Toe game! This is a simple implementation of the classic Tic Tac Toe (also known as Noughts and Crosses) game. Play against a friend or challenge the AI opponent to see who can achieve three in a row first.  
