@@ -10,10 +10,6 @@
     src: url(fonts/TropicalAsianDemoRegular-11V0.ttf)
 }
 
-@font-face {
-    font-family: PPMori;
-    src: url(fonts/NeueMontreal-Regular.otf);
-}
 
 *, *::after, *::before {
     box-sizing: border-box;
