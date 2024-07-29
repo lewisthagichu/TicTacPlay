@@ -1,7 +1,7 @@
 ## LIVE LINK ##
-Link: https://lewisthagichu.github.io/tik-tac-toe/
+Link: https://lewisthagichu.github.io/TicTacPlay/
 
-# Tic Tac Toe Game
+# TicTacPlay
 This is an implementation of the classic Tic Tac Toe (also known as Noughts and Crosses) game. Play against a friend or challenge the AI opponent to see who can achieve three in a row first.  
 The project is part of [The Odin Project](https://www.theodinproject.com/)<br />
 
