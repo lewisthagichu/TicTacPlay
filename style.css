@@ -11,8 +11,8 @@
 }
 
 @font-face {
-    font-family: bobba;
-    src: url(fonts/Bobaland.ttf);
+    font-family: PPMori;
+    src: url(fonts/NeueMontreal-Regular.otf);
 }
 
 *, *::after, *::before {
@@ -37,10 +37,12 @@
     --bg-color: #f6f6f9;
     --color-white: #fff; 
 
-    --cell-size: 120px;
+    --cell-size: clamp(8rem, 10vw, 20rem);
     --mark-size: calc(var(--cell-size) * .9);
+    --large-icons-size: clamp(8rem, 10vw, 12rem);
     
     --card-padding: 1.6rem;
+    --gap-padding:clamp(8rem, 10vw, 11rem);
     --padding-1: 1rem;
     --padding-2: 8px;
 
@@ -48,12 +50,14 @@
     --border-radius-1: 1rem;
     --border-radius-2: 6px;
 
+    --heading-size: clamp(2.4rem, 7vw, 4rem);
+    --text-size: clamp(1.2rem, 5.4vw, 2.4rem);
+
     --box-shadow: 0 2rem 3rem var(--border-cell);
 }
 
 html {
     font-size: 62.5%;
-    font-family: 'Press Start 2P', cursive;
 	-webkit-user-select: none;
 	-moz-user-select: none;
 	user-select: none;
@@ -73,29 +77,23 @@ body {
 }
 
 .landing {
+    position: absolute;
+    top: 0;
+    left: 0;
     background: var(--bg-color);
     height: 100vh;
+    width: 100vw;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 20rem;
-    width: 100%;
+    justify-content: center;
+    z-index: 2;
 }
 
 .landing h2 {
    font-family: 'bubblyFont';
    font-weight: 400; 
    font-size: 12rem;
-}
-
-.slider {
-    background: var(--bg-color);
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    transform: translateY(100%);
 }
 
 .title h2 {
@@ -109,30 +107,30 @@ h2 span {
 
 /* ------------------INTRO---------------------- */
 .intro {
-    position: fixed;
-    top: 0;
-    left: 0;
-    min-height: 100vh;
-    min-width: 100vw;
-    align-items: center;
+    position: relative;
+    height: 100vh;
+    width: 100vw;
     display: flex;
     flex-direction: column;
-    opacity: 0;
+    align-items: center;
+    gap: var(--gap-padding);
+    background-color: var(--bg-color);
 }
 
 .intro p {
-    font-size: 3rem;
+    font-size: var(--heading-size);
     font-weight: 500;
     font-family: tropical-Asian;
 }
 
 .intro .top {
+    position: relative;
     width: 100%;
-    height: 40vh;
     display: flex;
     justify-content: center;
-    align-items: center;
-    gap: 17rem;
+    align-items: flex-end;
+    gap: var(--large-icons-size);
+    height: 40vh;
 }
 
 .x-icon {
@@ -140,14 +138,13 @@ h2 span {
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 300ms ease-in-out;
+    transition: all 300ms cubic-bezier(.76, 0, .24, 1);
 
 } 
 
 .x-icon:hover,
 .circle-icon:hover {
     scale: 1.2;
-    /* animation: rotate 6s linear; */
     z-index: 1;
 }
 
@@ -155,8 +152,8 @@ h2 span {
 .x-icon::after {
     position: absolute;
     content: '';
-    width: calc(180px * .3);
-    height: 180px;
+    width: calc(var(--large-icons-size) * .3);
+    height: var(--large-icons-size);
     background: linear-gradient(45deg, var(--color-blue-dark), var(--color-blue-light)); 
     box-shadow: 0 0 10px var(--color-blue-dark);   
 }
@@ -174,7 +171,7 @@ h2 span {
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 300ms ease-in-out;
+    transition: all 300ms cubic-bezier(.76, 0, .24, 1);
 }
 
 .circle-icon::before,
@@ -182,15 +179,15 @@ h2 span {
     position: absolute;
     content: '';
     border-radius: 50%;
-    width: calc(180px * .9);
-    height: calc(180px * .9);
+    width: calc(var(--large-icons-size) * .9);
+    height: calc(var(--large-icons-size) * .9);
     background: linear-gradient(45deg, var(--color-orange-dark), var(--color-orange-light)); 
     box-shadow: 0 0 1px var(--color-orange-light);   
 }
 
 .circle-icon::after {
-    width: calc(180px * .4);
-    height: calc(180px * .4);
+    width: calc(var(--large-icons-size) * .4);
+    height: calc(var(--large-icons-size) * .4);
     background: var(--bg-color);
 }
 
@@ -202,10 +199,9 @@ h2 span {
     display: none;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
     gap: 1rem;
-    height: 60vh;
     width: 100%;
+    height: 60vh;
 }
 .mode .buttons {
     display: flex;
@@ -216,19 +212,12 @@ h2 span {
 button {
     padding: 8px 20px;
     background: var(--color-blue-dark);
-    border-radius: 100px;
-    cursor: pointer;
     color: var(--color-white);
-    display: inline-flex;
-    font-size: 1.8rem;
+    border-radius: 100px;
+    font-size: calc(var(--text-size) * 0.8);
     font-weight: 500;
     font-family: 'Caveat', cursive;
-    min-width: 140px;
-    max-width: 180px;
-    justify-content: center;
-    line-height: 20px;
     box-shadow: var(--box-shadow);
-    width: 140px;
     transition: all 300ms ease;
 }
 
@@ -292,7 +281,8 @@ input[type="text"] {
 
 /* -----------------------------CONTAINER-------------------------- */
 .container {
-    height: 100vh;
+    position: relative;
+    min-height: 100vh;
     width: 100vw;
     background: var(--bg-color);
     display: flex;
@@ -300,7 +290,7 @@ input[type="text"] {
     align-items: center;
     display: none;
     gap: 2rem; 
-    padding-top: 10rem;   
+    padding-top: clamp(6rem, 6vw, 16rem);   
 }
 
 /* ---------------------TALLY-------------------------- */
@@ -308,7 +298,7 @@ input[type="text"] {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 2rem;    
+    gap: 2rem; 
 }
 
 .tally .score {
@@ -318,16 +308,17 @@ input[type="text"] {
 }
 
 .tally p {
-    font-size: 1.4rem;
+    font-size: calc(var(--text-size) * .8);
     color: var(--color-orange-light);
 }
 
 #player-1,
 #player-2 {
-    font-size: 2rem;
+    font-size: var(--text-size);   
     letter-spacing: 2px;
     font-weight: 700;
     font-family: 'Caveat', cursive;
+    text-transform: uppercase;
 }
 
 /* ---------------------BOARD-------------------------- */
@@ -341,7 +332,7 @@ input[type="text"] {
     padding: var(--card-padding);
     border-radius: var(--card-border-radius);
     box-shadow: var(--box-shadow);
-    transition: all 300ms;
+    transition: all 300ms ease-in-out;
     opacity: 0;
 }
 
@@ -438,9 +429,8 @@ button.restart:hover {
     transform: scale(.9);
 }
 
-.results .message,
-button.restart {
-    font-size: 2.5rem;
+.results .message {
+    font-size: var(--text-size);
     font-weight: 700;
     text-align: center;
     font-family: 'caveat', cursive;
@@ -456,7 +446,7 @@ button.restart {
     background: var(--bg-color);
     color: black;
     box-shadow: none;
-    font-size: 2.5rem;
+    font-size: calc(var(--text-size))
 }
 
 button.restart:hover {
@@ -484,4 +474,10 @@ button.end-game:hover {
     box-shadow: none;
 }
 
+@media screen and (max-width: 991px) {
+    .container {
+        padding-top: 20vh;
+    }
+    
+}
   

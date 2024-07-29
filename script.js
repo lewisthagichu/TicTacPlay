@@ -3,10 +3,10 @@ let originBoard;
 let huTurn = true;
 let xScore = 0;
 let circleScore = 0;
-let gameMode = "";
+let gameMode = '';
 
-const huPlayer = "X";
-const aiPlayer = "O";
+const huPlayer = 'X';
+const aiPlayer = 'O';
 const winCombos = [
   [0, 1, 2],
   [3, 4, 5],
@@ -18,37 +18,37 @@ const winCombos = [
   [6, 4, 2],
 ];
 const difficultyOptions = {
-  easy: "easy",
-  medium: "medium",
-  unbeatable: "unbeatable",
+  easy: 'easy',
+  medium: 'medium',
+  unbeatable: 'unbeatable',
 };
 let difficulty = difficultyOptions.easy;
 
 // DOM elements
-const form = document.getElementById("form");
-const cellElements = document.querySelectorAll(".data-cell");
-const endRound = document.querySelector(".end-round");
-const endGame = document.querySelector(".end-game");
-const restartBtn = document.getElementById("restart-btn");
-const continueBtn = document.getElementById("continue-btn");
-const startBtn = document.getElementById("start");
-const p1Name = document.getElementById("p1-name");
-const p2Name = document.getElementById("p2-name");
-const player1 = document.getElementById("player-1");
-const player2 = document.getElementById("player-2");
-const board = document.getElementById("board");
+const form = document.getElementById('form');
+const cellElements = document.querySelectorAll('.data-cell');
+const endRound = document.querySelector('.end-round');
+const endGame = document.querySelector('.end-game');
+const restartBtn = document.getElementById('restart-btn');
+const continueBtn = document.getElementById('continue-btn');
+const startBtn = document.getElementById('start');
+const p1Name = document.getElementById('p1-name');
+const p2Name = document.getElementById('p2-name');
+const player1 = document.getElementById('player-1');
+const player2 = document.getElementById('player-2');
+const board = document.getElementById('board');
 
 // Event listeners
-restartBtn.addEventListener("click", () => {
+restartBtn.addEventListener('click', () => {
   xScore = 0;
   circleScore = 0;
-  document.querySelector("#x-score").textContent = 0;
-  document.querySelector("#circle-score").textContent = 0;
+  document.querySelector('#x-score').textContent = 0;
+  document.querySelector('#circle-score').textContent = 0;
   restart();
   startGame();
 });
 
-continueBtn.addEventListener("click", () => {
+continueBtn.addEventListener('click', () => {
   restart();
   startGame();
 });
@@ -56,7 +56,7 @@ continueBtn.addEventListener("click", () => {
 function startGame() {
   chooseGameMode();
   gameDifficulty();
-  form.addEventListener("submit", (e) => {
+  form.addEventListener('submit', (e) => {
     e.preventDefault();
     setName();
   });
@@ -65,82 +65,82 @@ function startGame() {
   setBoardHoverClass();
   makeComputerFirstMove();
   cellElements.forEach((cell) => {
-    cell.addEventListener("click", handleClick, { once: true });
+    cell.addEventListener('click', handleClick, { once: true });
   });
 }
 
 // Choose a game mode
 function chooseGameMode() {
-  document.getElementById("single").addEventListener("click", () => {
-    gameMode = "computer";
-    removeCard(".mode");
+  document.getElementById('single').addEventListener('click', () => {
+    gameMode = 'computer';
+    removeCard('.mode');
     setTimeout(() => {
-      document.querySelector(".mode").style.display = "none";
-      document.querySelector(".difficulty").style.display = "flex";
-      addCard(".difficulty");
+      document.querySelector('.mode').style.display = 'none';
+      document.querySelector('.difficulty').style.display = 'flex';
+      addCard('.difficulty');
     }, 1000);
 
-    p2Name.value = "AI";
-    p2Name.placeholder = "AI";
+    p2Name.value = 'AI';
+    p2Name.placeholder = 'AI';
     p2Name.readOnly = true;
   });
-  document.getElementById("multi").addEventListener("click", () => {
-    p2Name.placeholder = "Player 2";
+  document.getElementById('multi').addEventListener('click', () => {
+    p2Name.placeholder = 'Player 2';
     p2Name.readOnly = false;
-    gameMode = "multi-player";
-    removeCard(".mode");
+    gameMode = 'multi-player';
+    removeCard('.mode');
     setTimeout(() => {
-      document.querySelector(".mode").style.display = "none";
-      document.querySelector(".names").style.display = "flex";
-      addCard(".names");
+      document.querySelector('.mode').style.display = 'none';
+      document.querySelector('.names').style.display = 'flex';
+      addCard('.names');
     }, 1000);
   });
 }
 
 // Choose difficulty
 function gameDifficulty() {
-  document.getElementById("easy").addEventListener("click", () => {
+  document.getElementById('easy').addEventListener('click', () => {
     difficulty = difficultyOptions.easy;
     showName();
   });
-  document.getElementById("medium").addEventListener("click", () => {
+  document.getElementById('medium').addEventListener('click', () => {
     difficulty = difficultyOptions.medium;
     showName();
   });
-  document.getElementById("unbeatable").addEventListener("click", () => {
+  document.getElementById('unbeatable').addEventListener('click', () => {
     difficulty = difficultyOptions.unbeatable;
     showName();
   });
 }
 
 function showName() {
-  removeCard(".difficulty");
+  removeCard('.difficulty');
   setTimeout(() => {
-    document.querySelector(".difficulty").style.display = "none";
-    document.querySelector(".names").style.display = "flex";
-    addCard(".names");
+    document.querySelector('.difficulty').style.display = 'none';
+    document.querySelector('.names').style.display = 'flex';
+    addCard('.names');
   }, 1000);
 }
 
 function setName() {
   const p1NameValue = p1Name.value.trim();
   const p2NameValue = p2Name.value.trim();
-  const small1 = document.getElementById("small-1");
-  const small2 = document.getElementById("small-2");
+  const small1 = document.getElementById('small-1');
+  const small2 = document.getElementById('small-2');
 
   if (p1NameValue.length > 10) {
-    small1.textContent = "Name should have maximum 10 characters";
+    small1.textContent = 'Name should have maximum 10 characters';
   } else if (p2NameValue > 10) {
-    small2.textContent = "Name should have maximum 10 characters";
+    small2.textContent = 'Name should have maximum 10 characters';
   } else {
     player1.textContent = p1NameValue;
     player2.textContent = p2NameValue;
-    small1.textContent = "";
-    removeCard(".names");
+    small1.textContent = '';
+    removeCard('.names');
     setTimeout(() => {
-      document.querySelector(".names").style.display = "none";
-      document.querySelector(".start-game").style.display = "flex";
-      addCard(".start-game");
+      document.querySelector('.names').style.display = 'none';
+      document.querySelector('.start-game').style.display = 'flex';
+      addCard('.start-game');
     }, 1000);
   }
 }
@@ -151,15 +151,15 @@ function handleClick(e) {
   const cellId = e.target.id;
   const currentPlayer = huTurn ? huPlayer : aiPlayer;
 
-  if (gameMode === "multi-player") {
+  if (gameMode === 'multi-player') {
     placeMark(cell, currentPlayer, cellId);
     if (!checkWinner(originBoard, currentPlayer)) checkDraw();
     switchTurns();
     setBoardHoverClass();
   }
 
-  if (gameMode === "computer") {
-    if (huTurn && typeof originBoard[cellId] === "number") {
+  if (gameMode === 'computer') {
+    if (huTurn && typeof originBoard[cellId] === 'number') {
       placeMark(cell, currentPlayer, cellId);
       switchTurns();
       setBoardHoverClass();
@@ -177,8 +177,8 @@ function placeMark(cell, currentPlayer, cellId) {
   originBoard[cellId] = currentPlayer;
 
   currentPlayer == huPlayer
-    ? cell.classList.add("x")
-    : cell.classList.add("circle");
+    ? cell.classList.add('x')
+    : cell.classList.add('circle');
 
   let gameWon = checkWinner(originBoard, currentPlayer);
   if (gameWon) gameOver(currentPlayer);
@@ -210,15 +210,15 @@ function displayResult(player) {
 }
 
 function updateScore(message) {
-  document.querySelector("#x-score").textContent = xScore;
-  document.querySelector("#circle-score").textContent = circleScore;
-  endRound.style.display = "flex";
+  document.querySelector('#x-score').textContent = xScore;
+  document.querySelector('#circle-score').textContent = circleScore;
+  endRound.style.display = 'flex';
   declareWinner(message);
   resultsAnimation();
 }
 
 function declareWinner(message) {
-  document.querySelector("#message").textContent = message;
+  document.querySelector('#message').textContent = message;
 }
 
 function getCurrentPlayer() {
@@ -230,13 +230,13 @@ function switchTurns() {
 }
 
 function setBoardHoverClass() {
-  board.classList.remove("x");
-  board.classList.remove("circle");
+  board.classList.remove('x');
+  board.classList.remove('circle');
 
   if (huTurn) {
-    board.classList.add("x");
+    board.classList.add('x');
   } else {
-    board.classList.add("circle");
+    board.classList.add('circle');
   }
 }
 
@@ -254,13 +254,13 @@ function checkDraw() {
 }
 
 function emptySpaces(board) {
-  return board.filter((arr) => typeof arr === "number");
+  return board.filter((arr) => typeof arr === 'number');
 }
 
 function makeComputerMove(cellId) {
   setTimeout(() => {
     originBoard[cellId] = aiPlayer;
-    document.getElementById(cellId).classList.add("circle");
+    document.getElementById(cellId).classList.add('circle');
 
     let gameWon = checkWinner(originBoard, aiPlayer);
     if (gameWon) gameOver(aiPlayer);
@@ -268,7 +268,7 @@ function makeComputerMove(cellId) {
 }
 
 function makeComputerFirstMove() {
-  if (gameMode === "computer" && !huTurn) {
+  if (gameMode === 'computer' && !huTurn) {
     makeComputerMove(bestSpot());
     switchTurns();
     setBoardHoverClass();
@@ -335,7 +335,7 @@ function minimax(newBoard, player) {
     return { score: 0 };
   }
 
-  // an array to collect all the objects
+  // an array to collect all the moves
   var moves = [];
 
   // loop through available spots
@@ -385,48 +385,47 @@ function minimax(newBoard, player) {
   }
 
   // return the chosen move (object) from the array to the higher depth
-
   return moves[bestMove];
 }
 
 function gameOver(player) {
   cellElements.forEach((cell) => {
-    cell.removeEventListener("click", handleClick, { once: true });
+    cell.removeEventListener('click', handleClick, { once: true });
   });
   displayResult(player);
 }
 
 function restart() {
-  document.querySelector("#message").textContent = "";
-  endRound.style.display = "none";
+  document.querySelector('#message').textContent = '';
+  endRound.style.display = 'none';
 
   cellElements.forEach((cell) => {
-    cell.classList.remove("circle");
-    cell.classList.remove("x");
+    cell.classList.remove('circle');
+    cell.classList.remove('x');
   });
 }
 
 // Start the game initially
-startBtn.addEventListener("click", () => {
-  p1Name.value = "";
-  p2Name.value = "";
+startBtn.addEventListener('click', () => {
+  p1Name.value = '';
+  p2Name.value = '';
 
   startBtnAnimation();
   setTimeout(() => {
-    document.querySelector(".intro").style.display = "none";
-    document.querySelector(".start-game").style.display = "none";
-    document.querySelector(".container").style.display = "flex";
+    document.querySelector('.intro').style.display = 'none';
+    document.querySelector('.start-game').style.display = 'none';
+    document.querySelector('.container').style.display = 'flex';
     addBoardAnimation();
   }, 1000);
 });
 
 // Quit the game
-endGame.addEventListener("click", () => {
+endGame.addEventListener('click', () => {
   xScore = 0;
   circleScore = 0;
-  document.querySelector("#x-score").textContent = 0;
-  document.querySelector("#circle-score").textContent = 0;
-  gameMode = "";
+  document.querySelector('#x-score').textContent = 0;
+  document.querySelector('#circle-score').textContent = 0;
+  gameMode = '';
   huTurn = true;
   endGameAnimation();
   resetElements();
@@ -440,27 +439,25 @@ function landingAnimation() {
 
   landingTL
     .fromTo(
-      ".big-text",
-      { y: "100%" },
-      { duration: 1, y: "0%", delay: 1.2, stagger: 0.25 }
+      '.big-text',
+      { y: '100%' },
+      { duration: 1, y: '0%', delay: 1.2, stagger: 0 }
     )
-    .fromTo(".slider", { y: "100%" }, { duration: 2, y: "-100%", delay: 0.5 })
-    .fromTo(".landing", { y: "0%" }, { duration: 1, y: "-100%" }, "-=1.5")
-    .fromTo(".intro", { opacity: 0 }, { duration: 1, opacity: 1 })
     .fromTo(
-      ".top",
-      { y: "-100%" },
+      '.landing',
+      { y: '0' },
       {
-        duration: 1,
-        y: "0%",
-        ease: "bounce",
+        y: '-100%',
+        duration: 2,
+        delay: 0.5,
+        ease: 'power3.inOut',
         onComplete: () => {
-          document.querySelector(".landing").style.display = "none";
+          document.querySelector('.landing').style.display = 'none';
         },
       }
     )
-    .fromTo(".tally", { opacity: 0 }, { opacity: 1 })
-    .fromTo(".results", { opacity: 0 }, { opacity: 1 });
+    .fromTo('.tally', { opacity: 0 }, { opacity: 1 })
+    .fromTo('.results', { opacity: 0 }, { opacity: 1 });
 }
 
 function removeCard(card) {
@@ -472,60 +469,60 @@ function addCard(card) {
 }
 
 function addBoardAnimation() {
-  const boardTL = gsap.timeline({ defaults: { ease: "bounce" }, delay: 0.5 });
+  const boardTL = gsap.timeline({ defaults: { ease: 'bounce' }, delay: 0.5 });
 
   boardTL
-    .to(".board", { opacity: 1, duration: 2, ease: "back" })
-    .fromTo(".tally", { y: "-400%" }, { y: "0%", duration: 1 }, "-=1")
-    .fromTo(".end-game", { opacity: 0 }, { opacity: 1 }, "-=1.5");
+    .to('.board', { opacity: 1, duration: 2, ease: 'back' })
+    .fromTo('.tally', { y: '-1000%' }, { y: '0%', duration: 1 }, '-=1')
+    .fromTo('.end-game', { opacity: 0 }, { opacity: 1 }, '-=1.5');
 }
 
 function startBtnAnimation() {
-  const startBtnTL = gsap.timeline({ defaults: { ease: "sine" } });
+  const startBtnTL = gsap.timeline({ defaults: { ease: 'sine' } });
 
   startBtnTL
-    .fromTo(".top", { y: "0%" }, { y: "-100%", duration: 1 })
-    .fromTo(".start-game", { opacity: 1 }, { opacity: 0, duration: 1 }, "-=1");
+    .fromTo('.top', { opacity: 1 }, { opacity: 0, duration: 1 })
+    .fromTo('.start-game', { opacity: 1 }, { opacity: 0, duration: 1 }, '-=1');
 }
 
 function resultsAnimation() {
   const resultsTL = gsap.timeline({ defaults: { duration: 1.5 } });
 
   resultsTL
-    .fromTo(".results", { opacity: 0 }, { opacity: 1 })
-    .fromTo(".end-round", { opacity: 0 }, { opacity: 1 });
+    .fromTo('.results', { opacity: 0 }, { opacity: 1 })
+    .fromTo('.end-round', { opacity: 0 }, { opacity: 1 });
 }
 
 function endGameAnimation() {
   const endGameTL = gsap.timeline();
 
   endGameTL
-    .fromTo(".tally", { opacity: 1 }, { opacity: 0, duration: 1 })
-    .fromTo(".board", { opacity: 1 }, { opacity: 0, duration: 1 }, "-=1")
-    .fromTo(".results", { opacity: 1 }, { opacity: 0, duration: 1 }, "-=1")
-    .fromTo(".end-game", { opacity: 1 }, { opacity: 0, duration: 1 }, "-=1");
+    .fromTo('.tally', { opacity: 1 }, { opacity: 0, duration: 1 })
+    .fromTo('.board', { opacity: 1 }, { opacity: 0, duration: 1 }, '-=1')
+    .fromTo('.results', { opacity: 1 }, { opacity: 0, duration: 1 }, '-=1')
+    .fromTo('.end-game', { opacity: 1 }, { opacity: 0, duration: 1 }, '-=1');
 
   setTimeout(() => {
+    document.querySelector('.container').style.display = 'none';
     restart();
-    document.querySelector(".container").style.display = "none";
-    document.querySelector(".landing").style.display = "flex";
+    document.querySelector('.landing').style.display = 'flex';
   }, 1200);
 }
 
 function resetElements() {
-  const bigText = document.querySelector(".big-text");
-  const slider = document.querySelector(".slider");
-  const landing = document.querySelector(".landing");
-  const intro = document.querySelector(".intro");
-  const board = document.querySelector(".board");
-  const mode = document.querySelector(".mode");
+  const bigText = document.querySelector('.big-text');
+  const landing = document.querySelector('.landing');
+  const intro = document.querySelector('.intro');
+  const top = document.querySelector('.top');
+  const board = document.querySelector('.board');
+  const mode = document.querySelector('.mode');
 
-  bigText.style.transform = "translateY(100%)";
-  slider.style.transform = "translateY(100%)";
-  landing.style.transform = "translateY(0%)";
-  intro.style.opacity = 0;
-  intro.style.display = "flex";
-  mode.style.display = "flex";
+  bigText.style.transform = 'translateY(100%)';
+  landing.style.display = 'block';
+  landing.style.transform = 'translateY(0)';
+  intro.style.display = 'flex';
+  top.style.opacity = 1;
+  mode.style.display = 'flex';
   mode.style.opacity = 1;
   board.style.opacity = 0;
 }
